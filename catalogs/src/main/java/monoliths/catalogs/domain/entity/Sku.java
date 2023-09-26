@@ -1,18 +1,17 @@
 package monoliths.catalogs.domain.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
+import java.util.Objects;
+import java.util.UUID;
+
 @Data
 @Setter(AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
-public class Sku implements Serializable {
+public class Sku {
 
     private UUID id;
 

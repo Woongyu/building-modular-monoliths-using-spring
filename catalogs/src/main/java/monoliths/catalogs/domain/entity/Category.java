@@ -1,23 +1,17 @@
 package monoliths.catalogs.domain.entity;
 
-import java.io.Serializable;
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.val;
-
 @Data
 @Setter(AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = { "parent" })
-public class Category implements Serializable {
+public class Category {
 
     private UUID id;
 
