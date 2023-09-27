@@ -1,12 +1,10 @@
 buildscript {
     ext {
-        dependencyManagementVersion = '1.0.8.RELEASE'
-        springBootVersion = '2.2.1.RELEASE'
+        dependencyManagementVersion = '1.0.15.RELEASE'
+        springBootVersion = '2.7.13'
     }
 
     repositories {
-        maven { url 'http://repo.spring.io/plugins-release' }
-        maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
     }
 
@@ -21,9 +19,9 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
 
     configurations {
-        developmentOnly
+        devOnly
         runtimeClasspath {
-            extendsFrom developmentOnly
+            extendsFrom devOnly
         }
         compileOnly {
             extendsFrom annotationProcessor
@@ -31,8 +29,6 @@ subprojects {
     }
 
     repositories {
-        maven { url "https://repo.spring.io/libs-release" }
-        maven { url "https://repo.spring.io/milestone" }
         mavenCentral()
     }
 
@@ -52,9 +48,13 @@ subprojects {
         implementation 'org.slf4j:slf4j-api'
     }
 
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     compileJava.options.encoding = 'UTF-8'
+
+    tasks.withType(JavaCompile){
+        options.encoding = 'UTF-8'
+    }
 
     test {
         useJUnitPlatform()
@@ -63,14 +63,14 @@ subprojects {
 
 project(':commons') {
     dependencies {
-        compile 'org.springframework:spring-context'
-        compile 'org.springframework:spring-context-support'
+        implementation 'org.springframework:spring-context'
+        implementation 'org.springframework:spring-context-support'
     }
 }
 
 project(':catalogs') {
     dependencies {
-        compile project(':commons')
+        implementation project(':commons')
 
         implementation 'org.springframework:spring-webmvc'
         implementation 'org.springframework.boot:spring-boot-autoconfigure'
@@ -83,7 +83,7 @@ project(':catalogs') {
 
 project(':orders') {
     dependencies {
-        compile project(':commons')
+        implementation project(':commons')
 
         implementation 'org.springframework:spring-webmvc'
         implementation 'org.springframework.boot:spring-boot-autoconfigure'
@@ -96,7 +96,7 @@ project(':orders') {
 
 project(':shipments') {
     dependencies {
-        compile project(':commons')
+        implementation project(':commons')
 
         implementation 'org.springframework:spring-webmvc'
         implementation 'org.springframework.boot:spring-boot-autoconfigure'
@@ -111,9 +111,10 @@ project(':modular-monoliths') {
     apply plugin: 'org.springframework.boot'
 
     dependencies {
-        compile project(':catalogs')
-        compile project(':orders')
-        compile project(':shipments')
+        implementation project(':commons')
+        implementation project(':catalogs')
+        implementation project(':orders')
+        implementation project(':shipments')
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
